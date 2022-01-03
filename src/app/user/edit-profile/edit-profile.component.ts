@@ -40,6 +40,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
       name: [this.user.name, NameValidation],
       email: [this.user.email, EmailValidation],
       password: ['', OptionalPasswordValidation],
+      educator: [this.user.educator, []],
     });
   }
 

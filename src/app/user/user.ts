@@ -9,6 +9,7 @@ export interface IUser {
   email: string;
   name: string;
   createdAt: string;
+  educator: boolean;
 }
 
 export class User implements IUser {
@@ -16,11 +17,18 @@ export class User implements IUser {
     public _id = '',
     public email = '',
     public name = '',
-    public createdAt = ''
+    public createdAt = '',
+    public educator: boolean = false
   ) {}
 
   static Build(user: IUser): User {
-    return new User(user._id, user.email, user.name, user.createdAt);
+    return new User(
+      user._id,
+      user.email,
+      user.name,
+      user.createdAt,
+      user.educator
+    );
   }
 
   static BuildMany(users: IUser[]): User[] {
