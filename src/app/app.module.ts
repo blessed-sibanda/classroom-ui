@@ -24,6 +24,7 @@ import { AuthService } from './auth/auth.service';
 import { CustomAuthService } from './auth/custom-auth.service';
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
+import { NewCourseComponent } from './courses/new-course/new-course.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { authFactory } from './auth/auth.factory';
     SideNavigationComponent,
     SignUpComponent,
     SimpleDialogComponent,
+    NewCourseComponent,
   ],
   imports: [
     HttpClientModule,
