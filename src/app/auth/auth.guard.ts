@@ -63,7 +63,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   ): Observable<boolean> {
     return combineLatest([
       this.authService.authStatus$,
-      this.authService.currentUser$,
+      this.authService.getCurrentUser(),
     ]).pipe(
       map(([authStatus, currentUser]) => {
         if (!authStatus.isAuthenticated) {
