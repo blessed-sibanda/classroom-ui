@@ -1,0 +1,49 @@
+<mat-nav-list style="width: 200px">
+  <a (click)="closeMenu()" mat-list-item routerLink="/home">
+    <mat-icon mat-list-icon>home</mat-icon>
+    <span>Home</span>
+  </a>
+  <a (click)="closeMenu()" mat-list-item routerLink="/users">
+    <mat-icon mat-list-icon>people</mat-icon>
+    <span>Users</span>
+  </a>
+  <a
+    (click)="closeMenu()"
+    *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
+    mat-list-item
+    routerLink="/profile"
+  >
+    <mat-icon mat-list-icon>person</mat-icon>
+    <span>My Profile</span>
+  </a>
+  <a
+    *ngIf="!(authService.authStatus$ | async)?.isAuthenticated"
+    (click)="closeMenu()"
+    mat-list-item
+    routerLink="/login"
+  >
+    <mat-icon mat-list-icon>exit_to_app</mat-icon>
+    <span>Login</span>
+  </a>
+  <a
+    *ngIf="!(authService.authStatus$ | async)?.isAuthenticated"
+    (click)="closeMenu()"
+    mat-list-item
+    routerLink="/signup"
+  >
+    <mat-icon mat-list-icon>person_add</mat-icon>
+    <span>Sign Up</span>
+  </a>
+  <mat-divider
+    *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
+  ></mat-divider>
+  <a
+    *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
+    (click)="closeMenu()"
+    mat-list-item
+    routerLink="/logout"
+  >
+    <mat-icon mat-list-icon>power_settings_new</mat-icon>
+    <span>Logout</span>
+  </a>
+</mat-nav-list>

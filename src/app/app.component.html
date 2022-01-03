@@ -1,0 +1,63 @@
+<mat-toolbar color="primary">
+  <button fxHide.gt-xs mat-icon-button (click)="sideNavService.open()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>MEAN Skeleton</span>
+
+  <span class="flex-spacer"></span>
+
+  <a fxHide.lt-sm mat-button routerLinkActive="active" routerLink="/home"
+    >Home</a
+  >
+
+  <a fxHide.lt-sm mat-button routerLinkActive="active" routerLink="/users"
+    >Users</a
+  >
+
+  <a
+    *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
+    fxHide.lt-sm
+    mat-button
+    routerLinkActive="active"
+    routerLink="/profile"
+    >My Profile</a
+  >
+
+  <a
+    *ngIf="!(authService.authStatus$ | async)?.isAuthenticated"
+    fxHide.lt-sm
+    mat-button
+    routerLinkActive="active"
+    routerLink="/login"
+    >Login</a
+  >
+  <a
+    *ngIf="!(authService.authStatus$ | async)?.isAuthenticated"
+    fxHide.lt-sm
+    mat-button
+    routerLinkActive="active"
+    routerLink="/signup"
+    >SignUp</a
+  >
+  <a
+    *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
+    fxHide.lt-sm
+    mat-button
+    routerLinkActive="active"
+    routerLink="/logout"
+    >Logout</a
+  >
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav
+    style="z-index: 5"
+    [fixedInViewport]="media.isActive('xs')"
+    #sidenav
+    [mode]="media.isActive('xs') ? 'over' : 'side'"
+  >
+    <app-side-navigation></app-side-navigation>
+  </mat-sidenav>
+  <mat-sidenav-content style="min-height: 86vh; padding-top: 1.5em">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

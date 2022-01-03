@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "./variables";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.margin-top {
+  margin-top: 30px;
+}
+
+.flex-spacer {
+  flex: 1 1 auto;
+}
+
+.app-header {
+  color: $accent;
+}
+
+.text-center,
+.center-text {
+  text-align: center;
+}

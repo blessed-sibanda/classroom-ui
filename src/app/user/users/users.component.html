@@ -1,0 +1,25 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex.xs="96%" fxFlex.gt-xs="600px">
+    <div *ngIf="loading">Loading...</div>
+    <mat-card-content *ngIf="!loading">
+      <h2 class="app-header">Users</h2>
+      <mat-action-list>
+        <mat-list-item
+          [routerLink]="'/users/' + user._id"
+          *ngFor="let user of users"
+        >
+          <mat-icon style="transform: scale(1.2); margin-right: 0.5em"
+            >account_circle</mat-icon
+          >
+          <span>{{ user.name }}</span>
+
+          <div class="flex-spacer"></div>
+
+          <button mat-icon-button [routerLink]="'/users/' + user._id">
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-action-list>
+    </mat-card-content>
+  </mat-card>
+</div>

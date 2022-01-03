@@ -1,0 +1,87 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex.xs="98%" fxFlex.gt-xs="400px">
+    <mat-card-content>
+      <h1 class="app-header text-center">Edit Profile</h1>
+      <form
+        [formGroup]="profileEditForm"
+        (ngSubmit)="updateProfile(profileEditForm)"
+        fxLayout="column"
+      >
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <mat-icon>account_circle</mat-icon>
+          <mat-form-field fxFlex>
+            <input
+              matInput
+              placeholder="Name"
+              aria-label="Name"
+              formControlName="name"
+            />
+            <mat-error
+              *ngIf="profileEditForm.get('name')?.hasError('required')"
+            >
+              Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="profileEditForm.get('name')?.hasError('minlength')"
+            >
+              Name should be at least 3 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <mat-icon>email</mat-icon>
+          <mat-form-field fxFlex>
+            <input
+              matInput
+              placeholder="E-mail"
+              aria-label="E-mail"
+              formControlName="email"
+            />
+            <mat-error
+              *ngIf="profileEditForm.get('email')?.hasError('required')"
+            >
+              E-mail is required
+            </mat-error>
+            <mat-error *ngIf="profileEditForm.get('email')?.hasError('email')">
+              E-mail is not valid
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+          <mat-icon>vpn_key</mat-icon>
+          <mat-form-field fxFlex>
+            <input
+              matInput
+              placeholder="Password"
+              aria-label="Password"
+              formControlName="password"
+              type="password"
+            />
+            <mat-hint>Min password length 6 characters</mat-hint>
+            <mat-error
+              *ngIf="profileEditForm.get('password')?.hasError('minlength')"
+            >
+              Password should be at least 6 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" class="margin-top">
+          <div *ngIf="updateError" class="mat-caption" style="color: red">
+            {{ updateError }}
+          </div>
+          <div class="flex-spacer"></div>
+          <button
+            mat-raised-button
+            type="submit"
+            color="primary"
+            [disabled]="profileEditForm.invalid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
