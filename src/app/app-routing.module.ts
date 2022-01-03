@@ -6,6 +6,7 @@ import { HomeComponent } from './core/home/home.component';
 import { PageNotFoundComponent } from './core/page-not-found/page-not-found.component';
 import { LogoutComponent } from './auth/logout.component';
 import { NewCourseComponent } from './courses/new-course/new-course.component';
+import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'logout', component: LogoutComponent },
+  { path: 'teach/courses', component: MyCoursesComponent },
   { path: 'teach/courses/new', component: NewCourseComponent },
   {
     path: '',

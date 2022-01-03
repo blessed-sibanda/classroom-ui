@@ -21,10 +21,11 @@ import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { SimpleDialogComponent } from './common/simple-dialog/simple-dialog.component';
 import { LoginComponent } from './auth/login/login.component';
 import { AuthService } from './auth/auth.service';
-import { CustomAuthService } from './auth/custom-auth.service';
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
 import { NewCourseComponent } from './courses/new-course/new-course.component';
+import { NgpImagePickerModule } from 'ngp-image-picker';
+import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { NewCourseComponent } from './courses/new-course/new-course.component';
     SignUpComponent,
     SimpleDialogComponent,
     NewCourseComponent,
+    MyCoursesComponent,
   ],
   imports: [
     HttpClientModule,
@@ -47,6 +49,7 @@ import { NewCourseComponent } from './courses/new-course/new-course.component';
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
+    NgpImagePickerModule,
   ],
   providers: [
     {

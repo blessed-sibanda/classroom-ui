@@ -1,1 +1,79 @@
-<p>new-course works!</p>
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-card style="padding: 16px 28px" fxFlex.xs="98%" fxFlex.gt-xs="400px">
+    <mat-card-content>
+      <h1 class="app-header text-center">Edit Profile</h1>
+      <div
+        fxLayout="row"
+        style="margin-bottom: 1.5em"
+        fxLayoutAlign="center center"
+        fxLayoutGap="10px"
+      >
+        <ngp-image-picker
+          [_config]="imagePickerConf"
+          ($imageChanged)="onImageChange($event)"
+        ></ngp-image-picker>
+      </div>
+      <form
+        [formGroup]="courseForm"
+        (ngSubmit)="createCourse(courseForm)"
+        fxLayout="column"
+      >
+        <div>
+          <mat-form-field fxFlex>
+            <input
+              matInput
+              placeholder="Name"
+              aria-label="Name"
+              formControlName="name"
+            />
+            <mat-error *ngIf="courseForm.get('name')?.hasError('required')">
+              Course name is required
+            </mat-error>
+            <mat-error *ngIf="courseForm.get('name')?.hasError('minlength')">
+              Course name should be at least 3 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field fxFlex>
+            <textarea
+              matInput
+              formControlName="description"
+              placeholder="Description"
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+              cdkAutosizeMinRows="2"
+            ></textarea>
+            <mat-error
+              *ngIf="courseForm.get('description')?.hasError('minlength')"
+            >
+              Description should be at least 3 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Category" formControlName="category" />
+            <mat-error
+              *ngIf="courseForm.get('category')?.hasError('minLength')"
+            >
+              Category should be at least 3 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" class="margin-top">
+          <div class="flex-spacer"></div>
+          <button
+            mat-raised-button
+            type="submit"
+            color="primary"
+            [disabled]="courseForm.invalid"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

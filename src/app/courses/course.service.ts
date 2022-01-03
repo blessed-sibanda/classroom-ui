@@ -30,7 +30,7 @@ export class CourseService implements ICourseService {
     data.file && formData.append('name', data.file);
 
     return this.httpClient
-      .post<ICourse>(`${environment.baseApiUrl}/api/courses`, formData)
+      .post<ICourse>(`${environment.baseApiUrl}/courses`, formData)
       .pipe(map(Course.Build), catchError(transformError));
   }
 }
