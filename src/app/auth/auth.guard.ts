@@ -10,9 +10,10 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { Observable, map, take } from 'rxjs';
+import { Observable, map, take, combineLatest } from 'rxjs';
 
 import { UiService } from '../common/ui.service';
+import { IUser } from '../user/user';
 import { AuthService, IAuthService, IAuthStatus } from './auth.service';
 
 @Injectable({
@@ -60,8 +61,11 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   protected checkAuthorizations(
     route?: ActivatedRouteSnapshot
   ): Observable<boolean> {
-    return this.authService.authStatus$.pipe(
-      map((authStatus) => {
+    return combineLatest([
+      this.authService.authStatus$,
+      this.authService.currentUser$,
+    ]).pipe(
+      map(([authStatus, currentUser]) => {
         if (!authStatus.isAuthenticated) {
           this.uiService.showToast('You must login to continue');
           this.router.navigate(['login'], {
@@ -70,6 +74,15 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
             },
           });
 
+          return false;
+        }
+
+        const isInstructor = this.checkIsInstructor(currentUser, route);
+        if (!isInstructor) {
+          this.uiService.showToast(
+            'Only instructors are allowed to access this page'
+          );
+          this.router.navigate(['/home']);
           return false;
         }
 
@@ -96,6 +109,16 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       return true;
     }
     return authStatus.userId === route.paramMap.get('userId');
+  }
+
+  private checkIsInstructor(
+    currentUser: IUser,
+    route?: ActivatedRouteSnapshot
+  ) {
+    if (!route?.data?.['onlyInstructor']) {
+      return true;
+    }
+    return currentUser.educator;
   }
 
   getResolvedUrl(route?: ActivatedRouteSnapshot): string {

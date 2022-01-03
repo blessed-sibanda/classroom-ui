@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './core/page-not-found/page-not-found.comp
 import { LogoutComponent } from './auth/logout.component';
 import { NewCourseComponent } from './courses/new-course/new-course.component';
 import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -14,8 +15,18 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'logout', component: LogoutComponent },
-  { path: 'teach/courses', component: MyCoursesComponent },
-  { path: 'teach/courses/new', component: NewCourseComponent },
+  {
+    path: 'teach/courses',
+    component: MyCoursesComponent,
+    canActivate: [AuthGuard],
+    data: { onlyInstructor: true },
+  },
+  {
+    path: 'teach/courses/new',
+    component: NewCourseComponent,
+    canActivate: [AuthGuard],
+    data: { onlyInstructor: true },
+  },
   {
     path: '',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
