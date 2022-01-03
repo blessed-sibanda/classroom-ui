@@ -3,16 +3,22 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span>Classroom</span>
-
+  <a fxHide.lt-sm mat-icon-button routerLinkActive="active" routerLink="/home">
+    <mat-icon>home</mat-icon>
+  </a>
   <span class="flex-spacer"></span>
 
-  <a fxHide.lt-sm mat-button routerLinkActive="active" routerLink="/home"
-    >Home</a
+  <a
+    *ngIf="(authService.currentUser$ | async)?.educator"
+    fxHide.lt-sm
+    mat-button
+    routerLinkActive="active"
+    routerLink="/users"
+    color="secondary"
   >
-
-  <a fxHide.lt-sm mat-button routerLinkActive="active" routerLink="/users"
-    >Users</a
-  >
+    <mat-icon style="transform: scale(0.7)">library_books</mat-icon>
+    <span>Teach</span>
+  </a>
 
   <a
     *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
