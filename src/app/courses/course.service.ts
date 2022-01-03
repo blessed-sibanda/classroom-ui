@@ -14,6 +14,7 @@ export interface ICourseData {
 
 interface ICourseService {
   createCourse(data: ICourseData): Observable<Course>;
+  getInstructorCourses(instructorId: string): Observable<Course[]>;
 }
 
 @Injectable({
@@ -22,12 +23,20 @@ interface ICourseService {
 export class CourseService implements ICourseService {
   constructor(private httpClient: HttpClient) {}
 
+  getInstructorCourses(instructorId: string): Observable<Course[]> {
+    return this.httpClient
+      .get<ICourse[]>(
+        `${environment.baseApiUrl}/courses/instructor/${instructorId}`
+      )
+      .pipe(map(Course.BuildMany), catchError(transformError));
+  }
+
   createCourse(data: ICourseData): Observable<Course> {
     let formData = new FormData();
     formData.append('name', data.name);
     formData.append('description', data.description);
     data.category && formData.append('category', data.category);
-    data.file && formData.append('name', data.file);
+    data.file && formData.append('file', data.file);
 
     return this.httpClient
       .post<ICourse>(`${environment.baseApiUrl}/courses`, formData)

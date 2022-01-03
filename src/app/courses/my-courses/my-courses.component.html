@@ -1,1 +1,45 @@
-<p>my-courses works!</p>
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex.xs="96%" fxFlex.gt-xs="600px">
+    <div fxLayout="row" fxLayoutAlign="start baseline">
+      <h2 class="app-header" style="margin-bottom: 0; padding-bottom: 0">
+        My Courses
+      </h2>
+      <div class="flex-spacer"></div>
+      <button
+        class="mat-elevation-z1"
+        color="primary"
+        routerLink="/teach/courses/new"
+        mat-raised-button
+      >
+        <mat-icon>add</mat-icon>
+        <span>New Course</span>
+      </button>
+    </div>
+    <mat-card-content style="margin-top: 1em">
+      <div *ngFor="let course of courses; let i = index">
+        <div fxLayout="row" fxLayoutAlign="start start">
+          <img
+            style="
+              padding: 0.8em;
+              padding-left: 0;
+              max-width: 100px;
+              max-height: 70px;
+              object-fit: cover;
+            "
+            [src]="
+              course.imageUrl ? course.imageUrl : '../../../assets/course.png'
+            "
+            alt=""
+          />
+          <div style="margin-top: 0.5em; padding-bottom: 0.8em">
+            <h3 class="app-header" style="margin-bottom: 0">
+              {{ course.name }}
+            </h3>
+            <div>{{ course.description }}</div>
+          </div>
+        </div>
+        <mat-divider inset [fxHide]="i == courses.length - 1"></mat-divider>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

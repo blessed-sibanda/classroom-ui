@@ -74,13 +74,14 @@ export class NewCourseComponent implements OnInit, OnDestroy {
   buildForm() {
     this.courseForm = this.formBuider.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(3)]],
       category: ['', [Validators.minLength(2)]],
     });
   }
 
   createCourse(submittedForm: FormGroup) {
     let courseData = submittedForm.value as ICourseData;
+    courseData.file = this.image;
     this.subs.sink = this.courseService.createCourse(courseData).subscribe({
       next: (res) => {
         this.router.navigate(['/teach/courses']);

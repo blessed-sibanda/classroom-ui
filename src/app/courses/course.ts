@@ -35,4 +35,8 @@ export class Course implements ICourse {
       course.category
     );
   }
+
+  static BuildMany(courses: ICourse[]) {
+    return courses.map((c) => Course.Build(c));
+  }
 }

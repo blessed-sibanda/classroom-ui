@@ -45,6 +45,11 @@
               cdkAutosizeMinRows="2"
             ></textarea>
             <mat-error
+              *ngIf="courseForm.get('description')?.hasError('required')"
+            >
+              Course description is required
+            </mat-error>
+            <mat-error
               *ngIf="courseForm.get('description')?.hasError('minlength')"
             >
               Description should be at least 3 characters long
