@@ -1,1 +1,193 @@
-<p>edit-course works!</p>
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-card
+    [formGroup]="courseForm"
+    style="padding: 16px 28px"
+    fxFlex.xs="98%"
+    fxFlex.gt-xs="600px"
+  >
+    <mat-card-content>
+      <div
+        fxLayout="row"
+        fxLayoutAlign="space-between start"
+        fxLayoutGap="10px"
+      >
+        <div fxFlex fxLayout="column">
+          <mat-form-field fxFlex>
+            <input
+              matInput
+              placeholder="Name"
+              aria-label="Name"
+              formControlName="name"
+            />
+            <mat-error *ngIf="courseForm.get('name')?.hasError('required')">
+              Course name is required
+            </mat-error>
+            <mat-error *ngIf="courseForm.get('name')?.hasError('minlength')">
+              Course name should be at least 3 characters long
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field fxFlex>
+            <input matInput placeholder="Category" formControlName="category" />
+            <mat-error
+              *ngIf="courseForm.get('category')?.hasError('minLength')"
+            >
+              Category should be at least 3 characters long
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <button
+          mat-raised-button
+          type="submit"
+          color="accent"
+          class="mat-elevation-z1"
+          (click)="updateCourse(courseForm)"
+          [disabled]="courseForm.invalid"
+        >
+          SAVE
+        </button>
+      </div>
+      <div
+        fxLayout.gt-xs="row"
+        fxLayout.xs="column"
+        style="margin-bottom: 1.5em"
+        fxLayoutAlign.gt-xs="start start"
+        fxLayoutGap="8px"
+      >
+        <ngp-image-picker
+          fxFlex
+          [_config]="imagePickerConf"
+          ($imageChanged)="onImageChange($event)"
+          [_imageSrc]="
+            course.imageUrl ? course.imageUrl : '../../../assets/course.png'
+          "
+        ></ngp-image-picker>
+
+        <mat-form-field fxFlex.gt-xs="60%" fxFlex.xs>
+          <textarea
+            matInput
+            formControlName="description"
+            placeholder="Description"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="2"
+          ></textarea>
+          <mat-error
+            *ngIf="courseForm.get('description')?.hasError('required')"
+          >
+            Course description is required
+          </mat-error>
+          <mat-error
+            *ngIf="courseForm.get('description')?.hasError('minlength')"
+          >
+            Description should be at least 3 characters long
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-divider></mat-divider>
+      <div style="padding-top: 0.6em">
+        <h3 style="margin-bottom: 0; font-weight: 500">
+          Lessons - Edit and Rearrange
+        </h3>
+        <h4 style="margin-bottom: 0">{{ course.lessons.length }} lessons</h4>
+      </div>
+      <mat-list
+        cdkDropList
+        (cdkDropListDropped)="drop($event)"
+        formArrayName="lessons"
+        style="margin: 0 -5px"
+      >
+        <mat-list-item
+          style="
+            height: 100%;
+            background-color: #f8f8f8;
+            padding-top: 1.6em;
+            margin-bottom: 1.2em;
+          "
+          *ngFor="let position of lessonsArray.controls; let i = index"
+          [formGroupName]="i"
+          cdkDrag
+        >
+          <span
+            style="background-color: lightgrey"
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            mat-list-avatar
+          >
+            <div>
+              {{ i + 1 }}
+            </div>
+          </span>
+          <div style="margin-left: 0.8em" fxFlex fxLayout="column">
+            <mat-form-field fxFlex>
+              <input
+                matInput
+                placeholder="Title"
+                aria-label="title"
+                formControlName="title"
+              />
+              <mat-error
+                *ngIf="
+                  lessonsArray.controls[i].get('title')?.hasError('required')
+                "
+              >
+                Title is required
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  lessonsArray.controls[i].get('title')?.hasError('minlength')
+                "
+              >
+                Title should be at least 3 characters long
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <textarea
+                matInput
+                formControlName="content"
+                placeholder="Content"
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="2"
+              ></textarea>
+              <mat-error
+                *ngIf="
+                  lessonsArray.controls[i].get('content')?.hasError('required')
+                "
+              >
+                Course content is required
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  lessonsArray.controls[i].get('content')?.hasError('minlength')
+                "
+              >
+                Content should be at least 10 characters
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field fxFlex>
+              <input
+                matInput
+                placeholder="Resource Url"
+                aria-label="Resource Url"
+                formControlName="resourceUrl"
+              />
+              <mat-error
+                *ngIf="
+                  lessonsArray.controls[i]
+                    .get('resourceUrl')
+                    ?.hasError('pattern')
+                "
+              >
+                Resource Url must be a valid URL
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

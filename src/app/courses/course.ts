@@ -4,6 +4,7 @@ export interface ILesson {
   _id: string;
   title: string;
   content: string;
+  order: number;
   resourceUrl?: string;
 }
 

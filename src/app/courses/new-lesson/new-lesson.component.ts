@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { UiService } from 'src/app/common/ui.service';
+import { UrlValidation } from 'src/app/common/validations';
 import { SubSink } from 'subsink';
 import { Course } from '../course';
 import { CourseService, ILessonData } from '../course.service';
@@ -49,7 +50,7 @@ export class NewLessonComponent implements OnInit, OnDestroy {
     this.lessonForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       content: ['', [Validators.required, Validators.minLength(10)]],
-      resourceUrl: ['', [Validators.pattern(/^(https?:\/\/|www).+\..+/)]],
+      resourceUrl: ['', UrlValidation],
     });
   }
 

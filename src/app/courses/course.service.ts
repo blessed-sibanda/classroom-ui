@@ -5,22 +5,26 @@ import { environment } from 'src/environments/environment';
 import { transformError } from '../common/common';
 import { Course, ICourse } from './course';
 
+export interface ILessonData {
+  _id?: string;
+  title: string;
+  content: string;
+  order: number;
+  resourceUrl?: string;
+}
+
 export interface ICourseData {
   name: string;
   description: string;
   category?: string;
   file?: File;
-}
-
-export interface ILessonData {
-  title: string;
-  content: string;
-  resourceUrl?: string;
+  lessons?: ILessonData[];
 }
 
 interface ICourseService {
   currentCourse$: BehaviorSubject<Course>;
   createCourse(data: ICourseData): Observable<Course>;
+  updateCourse(courseId: string, data: ICourseData): Observable<Course>;
   getInstructorCourses(instructorId: string): Observable<Course[]>;
   getCourse(courseId: string): Observable<Course>;
   createLesson(courseId: string, data: ILessonData): Observable<Course>;
@@ -33,6 +37,23 @@ export class CourseService implements ICourseService {
   currentCourse$ = new BehaviorSubject<Course>(new Course());
 
   constructor(private httpClient: HttpClient) {}
+
+  updateCourse(courseId: string, data: ICourseData): Observable<Course> {
+    let formData = new FormData();
+    data.name && formData.append('name', data.name);
+    data.description && formData.append('description', data.description);
+    data.category && formData.append('category', data.category);
+    data.file && formData.append('file', data.file);
+    data.lessons && formData.append('lessons', JSON.stringify(data.lessons));
+
+    return this.httpClient
+      .put<ICourse>(`${environment.baseApiUrl}/courses/${courseId}`, formData)
+      .pipe(
+        map(Course.Build),
+        tap((c) => this.currentCourse$.next(c)),
+        catchError(transformError)
+      );
+  }
 
   createLesson(courseId: string, data: ILessonData): Observable<Course> {
     return this.httpClient

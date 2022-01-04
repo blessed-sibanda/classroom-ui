@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const materialModules = [
   MatToolbarModule,
@@ -23,6 +24,7 @@ const materialModules = [
   MatSnackBarModule,
   MatDialogModule,
   MatSlideToggleModule,
+  DragDropModule,
 ];
 
 @NgModule({

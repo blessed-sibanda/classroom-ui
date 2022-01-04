@@ -19,6 +19,7 @@ const routes: Routes = [
     component: EditCourseComponent,
     canActivate: [AuthGuard],
     resolve: { course: CourseResolve },
+    data: { onlyInstructor: true },
   },
   {
     path: 'teach/courses',
