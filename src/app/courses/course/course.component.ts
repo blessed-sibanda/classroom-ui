@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { UiService } from 'src/app/common/ui.service';
 import { User } from 'src/app/user/user';
 import { SubSink } from 'subsink';
-import { Course } from '../course';
+import { Course, ILesson } from '../course';
 import { CourseService } from '../course.service';
 import { NewLessonComponent } from '../new-lesson/new-lesson.component';
 
@@ -19,6 +19,7 @@ export class CourseComponent implements OnInit, OnDestroy {
   course!: Course;
   currentUser!: User;
   subs = new SubSink();
+  lessons!: ILesson[];
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +35,7 @@ export class CourseComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.course = this.route.snapshot.data['course'];
+    this.lessons = this.course.lessons.sort((a, b) => a.order - b.order);
     this.subs.sink = combineLatest([
       this.authService.currentUser$,
       this.courseService.currentCourse$,
