@@ -25,6 +25,7 @@ import { authFactory } from './auth/auth.factory';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { CourseModule } from './courses/course.module';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { CoursesComponent } from './courses/courses/courses.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
     SideNavigationComponent,
     SignUpComponent,
     SimpleDialogComponent,
+    CoursesComponent,
   ],
   imports: [
     HttpClientModule,

@@ -19,7 +19,12 @@
           >
             <mat-icon>edit</mat-icon>
           </button>
-          <button (click)="deleteCourse()" mat-icon-button color="accent">
+          <button
+            *ngIf="!course.published"
+            (click)="deleteCourse()"
+            mat-icon-button
+            color="accent"
+          >
             <mat-icon>delete</mat-icon>
           </button>
           <span *ngIf="!course.published">
