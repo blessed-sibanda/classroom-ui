@@ -97,6 +97,31 @@ export class EditCourseComponent implements OnInit, OnDestroy {
     );
   }
 
+  deleteLesson(index: number) {
+    let lessonId = this.lessons[index]._id;
+    const dialog = this.uiService.showDialog(
+      'Delete Lesson',
+      'Are you sure you want to delete this lesson?',
+      'Yes',
+      'Cancel'
+    );
+    this.subs.sink = dialog.subscribe((result) => {
+      if (result) {
+        this.courseService.deleteLesson(this.course._id, lessonId).subscribe({
+          next: (res) => {
+            this.course = res;
+            this.lessons = res.lessons;
+            this.buildForm();
+            this.uiService.showToast('Lesson deleted successfully', 'Close', {
+              duration: 2000,
+            });
+          },
+          error: (err) => this.uiService.showToast(err.message),
+        });
+      }
+    });
+  }
+
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }

@@ -44,6 +44,7 @@ export class CourseComponent implements OnInit, OnDestroy {
         tap(([user, course]) => {
           this.currentUser = user;
           this.course = course;
+          this.lessons = this.course.lessons;
         })
       )
       .subscribe();

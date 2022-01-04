@@ -101,6 +101,7 @@
         <mat-list-item
           style="
             height: 100%;
+            cursor: move;
             background-color: #f8f8f8;
             padding-top: 1.6em;
             margin-bottom: 1.2em;
@@ -119,70 +120,80 @@
               {{ i + 1 }}
             </div>
           </span>
-          <div style="margin-left: 0.8em" fxFlex fxLayout="column">
-            <mat-form-field fxFlex>
-              <input
-                matInput
-                placeholder="Title"
-                aria-label="title"
-                formControlName="title"
-              />
-              <mat-error
-                *ngIf="
-                  lessonsArray.controls[i].get('title')?.hasError('required')
-                "
-              >
-                Title is required
-              </mat-error>
-              <mat-error
-                *ngIf="
-                  lessonsArray.controls[i].get('title')?.hasError('minlength')
-                "
-              >
-                Title should be at least 3 characters long
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field fxFlex>
-              <textarea
-                matInput
-                formControlName="content"
-                placeholder="Content"
-                cdkTextareaAutosize
-                #autosize="cdkTextareaAutosize"
-                cdkAutosizeMinRows="2"
-              ></textarea>
-              <mat-error
-                *ngIf="
-                  lessonsArray.controls[i].get('content')?.hasError('required')
-                "
-              >
-                Course content is required
-              </mat-error>
-              <mat-error
-                *ngIf="
-                  lessonsArray.controls[i].get('content')?.hasError('minlength')
-                "
-              >
-                Content should be at least 10 characters
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field fxFlex>
-              <input
-                matInput
-                placeholder="Resource Url"
-                aria-label="Resource Url"
-                formControlName="resourceUrl"
-              />
-              <mat-error
-                *ngIf="
-                  lessonsArray.controls[i]
-                    .get('resourceUrl')
-                    ?.hasError('pattern')
-                "
-              >
-                Resource Url must be a valid URL
-              </mat-error>
-            </mat-form-field>
+          <div fxLayout="row" fxFlex fxLayoutAlign="space-between center">
+            <div style="margin-left: 0.8em" fxFlex fxLayout="column">
+              <mat-form-field fxFlex>
+                <input
+                  matInput
+                  placeholder="Title"
+                  aria-label="title"
+                  formControlName="title"
+                />
+                <mat-error
+                  *ngIf="
+                    lessonsArray.controls[i].get('title')?.hasError('required')
+                  "
+                >
+                  Title is required
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    lessonsArray.controls[i].get('title')?.hasError('minlength')
+                  "
+                >
+                  Title should be at least 3 characters long
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <textarea
+                  matInput
+                  formControlName="content"
+                  placeholder="Content"
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="2"
+                ></textarea>
+                <mat-error
+                  *ngIf="
+                    lessonsArray.controls[i]
+                      .get('content')
+                      ?.hasError('required')
+                  "
+                >
+                  Course content is required
+                </mat-error>
+                <mat-error
+                  *ngIf="
+                    lessonsArray.controls[i]
+                      .get('content')
+                      ?.hasError('minlength')
+                  "
+                >
+                  Content should be at least 10 characters
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field fxFlex>
+                <input
+                  matInput
+                  placeholder="Resource Url"
+                  aria-label="Resource Url"
+                  formControlName="resourceUrl"
+                />
+                <mat-error
+                  *ngIf="
+                    lessonsArray.controls[i]
+                      .get('resourceUrl')
+                      ?.hasError('pattern')
+                  "
+                >
+                  Resource Url must be a valid URL
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <button (click)="deleteLesson(i)" mat-icon-button color="warn">
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
 
           <mat-divider></mat-divider>
