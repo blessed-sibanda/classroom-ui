@@ -1,5 +1,12 @@
 import { IUser, User } from '../user/user';
 
+export interface ILesson {
+  _id: string;
+  title: string;
+  content: string;
+  resourceUrl?: string;
+}
+
 export interface ICourse {
   _id: string;
   name: string;
@@ -9,6 +16,7 @@ export interface ICourse {
   createdAt: string;
   published: boolean;
   category: string;
+  lessons: ILesson[];
 }
 
 export class Course implements ICourse {
@@ -20,7 +28,8 @@ export class Course implements ICourse {
     public instructor = new User(),
     public createdAt = '',
     public published = false,
-    public category = ''
+    public category = '',
+    public lessons: ILesson[] = []
   ) {}
 
   static Build(course: ICourse) {
@@ -32,7 +41,8 @@ export class Course implements ICourse {
       course.instructor,
       course.createdAt,
       course.published,
-      course.category
+      course.category,
+      course.lessons
     );
   }
 
