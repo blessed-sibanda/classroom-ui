@@ -6,7 +6,7 @@
   <mat-grid-tile *ngFor="let course of courses">
     <img
       [routerLink]="'/course/' + course._id"
-      style="object-fit: cover; width: 100%; height: 220px; cursor: pointer"
+      class="course-img"
       [src]="course.imageUrl ? course.imageUrl : '../../../assets/course.png'"
     />
     <mat-grid-tile-footer>
