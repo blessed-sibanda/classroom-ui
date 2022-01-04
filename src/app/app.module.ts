@@ -19,15 +19,12 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './user/sign-up/sign-up.component';
 import { SimpleDialogComponent } from './common/simple-dialog/simple-dialog.component';
-import { LoginComponent } from './auth/login/login.component';
 import { AuthService } from './auth/auth.service';
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
-import { NewCourseComponent } from './courses/new-course/new-course.component';
 import { NgpImagePickerModule } from 'ngp-image-picker';
-import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
-import { CourseComponent } from './courses/course/course.component';
 import { CourseResolve } from './courses/course.resolve';
+import { CourseModule } from './courses/course.module';
 
 @NgModule({
   declarations: [
@@ -37,9 +34,6 @@ import { CourseResolve } from './courses/course.resolve';
     SideNavigationComponent,
     SignUpComponent,
     SimpleDialogComponent,
-    NewCourseComponent,
-    MyCoursesComponent,
-    CourseComponent,
   ],
   imports: [
     HttpClientModule,
@@ -53,6 +47,7 @@ import { CourseResolve } from './courses/course.resolve';
     ReactiveFormsModule,
     FormsModule,
     NgpImagePickerModule,
+    CourseModule,
   ],
   providers: [
     {
