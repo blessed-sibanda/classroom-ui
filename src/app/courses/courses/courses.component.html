@@ -11,7 +11,9 @@
       }}</span>
       <span *ngIf="course.category" mat-line>{{ course.category }}</span>
       <div class="flex-spacer"></div>
-      <button mat-raised-button color="accent">Enroll</button>
+      <button mat-raised-button (click)="enroll(course._id)" color="accent">
+        Enroll
+      </button>
     </mat-grid-tile-footer>
   </mat-grid-tile>
 </mat-grid-list>
