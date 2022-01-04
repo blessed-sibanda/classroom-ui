@@ -6,9 +6,10 @@
       [src]="course.imageUrl ? course.imageUrl : '../../../assets/course.png'"
     />
     <mat-grid-tile-footer>
-      <span style="font-weight: 500; margin-right: 0.3em">{{
+      <span style="font-weight: 500; font-size: 15px" mat-line>{{
         course.name
       }}</span>
+      <span *ngIf="course.category" mat-line>{{ course.category }}</span>
       <div class="flex-spacer"></div>
       <button mat-raised-button color="accent">Enroll</button>
     </mat-grid-tile-footer>
