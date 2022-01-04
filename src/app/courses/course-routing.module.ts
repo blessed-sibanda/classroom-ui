@@ -11,7 +11,6 @@ const routes: Routes = [
   {
     path: 'course/:courseId',
     component: CourseComponent,
-    canActivate: [AuthGuard],
     resolve: { course: CourseResolve },
   },
   {

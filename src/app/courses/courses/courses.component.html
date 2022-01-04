@@ -1,1 +1,16 @@
-<p>courses works!</p>
+<mat-grid-list cols="2" rowHeight="220" gutterSize="0.5em">
+  <mat-grid-tile *ngFor="let course of courses">
+    <img
+      [routerLink]="'/course/' + course._id"
+      style="object-fit: cover; width: 100%; height: 220px; cursor: pointer"
+      [src]="course.imageUrl ? course.imageUrl : '../../../assets/course.png'"
+    />
+    <mat-grid-tile-footer>
+      <span style="font-weight: 500; margin-right: 0.3em">{{
+        course.name
+      }}</span>
+      <div class="flex-spacer"></div>
+      <button mat-raised-button color="accent">Enroll</button>
+    </mat-grid-tile-footer>
+  </mat-grid-tile>
+</mat-grid-list>
