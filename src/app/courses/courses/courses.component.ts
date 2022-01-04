@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MediaObserver } from '@angular/flex-layout';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UiService } from 'src/app/common/ui.service';
@@ -19,7 +20,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private courseService: CourseService,
     private uiService: UiService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    public media: MediaObserver
   ) {}
 
   ngOnDestroy(): void {
