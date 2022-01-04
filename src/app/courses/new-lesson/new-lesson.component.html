@@ -1,0 +1,82 @@
+<h1 mat-dialog-title class="app-header text-center">New Lesson</h1>
+<mat-dialog-content>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <mat-card class="mat-elevation-z0" fxFlex.xs="98%" fxFlex.gt-xs="400px">
+      <mat-card-content>
+        <form
+          [formGroup]="lessonForm"
+          (ngSubmit)="createLesson(lessonForm)"
+          fxLayout="column"
+        >
+          <div>
+            <mat-form-field fxFlex>
+              <input
+                matInput
+                placeholder="Title"
+                aria-label="title"
+                formControlName="title"
+              />
+              <mat-error *ngIf="lessonForm.get('title')?.hasError('required')">
+                Title is required
+              </mat-error>
+              <mat-error *ngIf="lessonForm.get('title')?.hasError('minlength')">
+                Title should be at least 3 characters long
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field fxFlex>
+              <textarea
+                matInput
+                formControlName="content"
+                placeholder="Content"
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="2"
+              ></textarea>
+              <mat-error
+                *ngIf="lessonForm.get('content')?.hasError('required')"
+              >
+                Course content is required
+              </mat-error>
+              <mat-error
+                *ngIf="lessonForm.get('content')?.hasError('minlength')"
+              >
+                Content should be at least 10 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div>
+            <mat-form-field fxFlex>
+              <input
+                matInput
+                placeholder="Resource Url"
+                aria-label="Resource Url"
+                formControlName="resourceUrl"
+              />
+              <mat-error
+                *ngIf="lessonForm.get('resourceUrl')?.hasError('pattern')"
+              >
+                Resource Url must be a valid URL
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="onBackClick()">Back</button>
+  <div class="flex-spacer"></div>
+  <button
+    mat-raised-button
+    [disabled]="lessonForm.invalid"
+    color="primary"
+    (click)="createLesson(lessonForm)"
+  >
+    Submit
+  </button>
+</div>

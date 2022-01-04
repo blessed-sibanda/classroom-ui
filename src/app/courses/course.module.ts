@@ -9,9 +9,10 @@ import { AppMaterialModule } from 'src/app/app-material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewLessonComponent } from './new-lesson/new-lesson.component';
 
 @NgModule({
-  declarations: [NewCourseComponent, MyCoursesComponent, CourseComponent],
+  declarations: [NewCourseComponent, MyCoursesComponent, CourseComponent, NewLessonComponent],
   imports: [
     CommonModule,
     CourseRoutingModule,

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { transformError } from '../common/common';
 import { Course, ICourse } from './course';
@@ -12,22 +12,49 @@ export interface ICourseData {
   file?: File;
 }
 
+export interface ILessonData {
+  title: string;
+  content: string;
+  resourceUrl?: string;
+}
+
 interface ICourseService {
+  currentCourse$: BehaviorSubject<Course>;
   createCourse(data: ICourseData): Observable<Course>;
   getInstructorCourses(instructorId: string): Observable<Course[]>;
   getCourse(courseId: string): Observable<Course>;
+  createLesson(courseId: string, data: ILessonData): Observable<Course>;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class CourseService implements ICourseService {
+  currentCourse$ = new BehaviorSubject<Course>(new Course());
+
   constructor(private httpClient: HttpClient) {}
+
+  createLesson(courseId: string, data: ILessonData): Observable<Course> {
+    return this.httpClient
+      .post<ICourse>(
+        `${environment.baseApiUrl}/courses/${courseId}/lessons`,
+        data
+      )
+      .pipe(
+        map(Course.Build),
+        catchError(transformError),
+        tap((c) => this.currentCourse$.next(c))
+      );
+  }
 
   getCourse(courseId: string): Observable<Course> {
     return this.httpClient
       .get<ICourse>(`${environment.baseApiUrl}/courses/${courseId}`)
-      .pipe(map(Course.Build), catchError(transformError));
+      .pipe(
+        map(Course.Build),
+        catchError(transformError),
+        tap((c) => this.currentCourse$.next(c))
+      );
   }
 
   getInstructorCourses(instructorId: string): Observable<Course[]> {

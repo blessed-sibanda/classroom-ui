@@ -1,3 +1,4 @@
+import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
@@ -27,6 +28,21 @@ export class UiService {
       customConfig || {
         width: '300px',
         data: { title, content, okText, cancelText },
+      }
+    );
+    return dialogRef.afterClosed();
+  }
+
+  showComponentDialog(
+    dialogComponent: ComponentType<unknown>,
+    data?: any,
+    customConfig?: MatDialogConfig
+  ): Observable<any> {
+    const dialogRef = this.dialog.open(
+      dialogComponent,
+      customConfig || {
+        width: '450px',
+        data,
       }
     );
     return dialogRef.afterClosed();

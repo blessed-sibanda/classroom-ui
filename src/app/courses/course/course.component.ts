@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
 import { ActivatedRoute } from '@angular/router';
-import { tap } from 'rxjs';
+import { combineLatest, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { UiService } from 'src/app/common/ui.service';
 import { User } from 'src/app/user/user';
 import { SubSink } from 'subsink';
 import { Course } from '../course';
+import { CourseService } from '../course.service';
+import { NewLessonComponent } from '../new-lesson/new-lesson.component';
 
 @Component({
   selector: 'app-course',
@@ -20,7 +23,9 @@ export class CourseComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     public media: MediaObserver,
-    private authService: AuthService
+    private authService: AuthService,
+    private uiService: UiService,
+    private courseService: CourseService
   ) {}
 
   ngOnDestroy(): void {
@@ -29,8 +34,20 @@ export class CourseComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.course = this.route.snapshot.data['course'];
-    this.subs.sink = this.authService.currentUser$
-      .pipe(tap((user) => (this.currentUser = user)))
+    this.subs.sink = combineLatest([
+      this.authService.currentUser$,
+      this.courseService.currentCourse$,
+    ])
+      .pipe(
+        tap(([user, course]) => {
+          this.currentUser = user;
+          this.course = course;
+        })
+      )
       .subscribe();
+  }
+
+  openNewLessonDialog() {
+    this.uiService.showComponentDialog(NewLessonComponent, this.course);
   }
 }
