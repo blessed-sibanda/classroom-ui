@@ -12,7 +12,11 @@
           <span *ngIf="course.category">{{ course.category }}</span>
         </div>
         <div *ngIf="currentUser._id == course.instructor._id">
-          <button mat-icon-button color="accent">
+          <button
+            [routerLink]="'/course/' + course._id + '/edit'"
+            mat-icon-button
+            color="accent"
+          >
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-stroked-button color="accent">PUBLISH</button>

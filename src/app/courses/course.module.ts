@@ -11,6 +11,7 @@ import { NgpImagePickerModule } from 'ngp-image-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewLessonComponent } from './new-lesson/new-lesson.component';
 import { CourseResolve } from './course.resolve';
+import { EditCourseComponent } from './edit-course/edit-course.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CourseResolve } from './course.resolve';
     MyCoursesComponent,
     CourseComponent,
     NewLessonComponent,
+    EditCourseComponent,
   ],
   imports: [
     CommonModule,
