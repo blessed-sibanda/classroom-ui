@@ -28,6 +28,7 @@ interface ICourseService {
   getInstructorCourses(instructorId: string): Observable<Course[]>;
   getCourse(courseId: string): Observable<Course>;
   deleteLesson(courseId: string, lessonId: string): Observable<Course>;
+  deleteCourse(courseId: string): Observable<void>;
   createLesson(courseId: string, data: ILessonData): Observable<Course>;
 }
 
@@ -38,6 +39,12 @@ export class CourseService implements ICourseService {
   currentCourse$ = new BehaviorSubject<Course>(new Course());
 
   constructor(private httpClient: HttpClient) {}
+
+  deleteCourse(courseId: string): Observable<void> {
+    return this.httpClient
+      .delete<void>(`${environment.baseApiUrl}/courses/${courseId}`)
+      .pipe(catchError(transformError));
+  }
 
   deleteLesson(courseId: string, lessonId: string): Observable<Course> {
     return this.httpClient

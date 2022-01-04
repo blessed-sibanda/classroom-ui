@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UiService } from 'src/app/common/ui.service';
@@ -26,7 +26,8 @@ export class CourseComponent implements OnInit, OnDestroy {
     public media: MediaObserver,
     private authService: AuthService,
     private uiService: UiService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private router: Router
   ) {}
 
   ngOnDestroy(): void {
@@ -48,6 +49,28 @@ export class CourseComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  deleteCourse() {
+    const dialog = this.uiService.showDialog(
+      `Delete ${this.course.name}`,
+      `Confirm to delete your course ${this.course.name}`,
+      'Confirm',
+      'Cancel'
+    );
+    this.subs.sink = dialog.subscribe((result) => {
+      if (result) {
+        this.courseService.deleteCourse(this.course._id).subscribe({
+          next: () => {
+            this.uiService.showToast('Course deleted successfully', 'Close', {
+              duration: 2000,
+            });
+            this.router.navigate(['/teach/courses']);
+          },
+          error: (err) => this.uiService.showToast(err.message),
+        });
+      }
+    });
   }
 
   openNewLessonDialog() {
