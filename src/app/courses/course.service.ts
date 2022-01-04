@@ -19,6 +19,7 @@ export interface ICourseData {
   category?: string;
   file?: File;
   lessons?: ILessonData[];
+  published: true;
 }
 
 interface ICourseService {
@@ -63,6 +64,7 @@ export class CourseService implements ICourseService {
     data.name && formData.append('name', data.name);
     data.description && formData.append('description', data.description);
     data.category && formData.append('category', data.category);
+    data.published && formData.append('published', data.published.toString());
     data.file && formData.append('file', data.file);
     data.lessons && formData.append('lessons', JSON.stringify(data.lessons));
 

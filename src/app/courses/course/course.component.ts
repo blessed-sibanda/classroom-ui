@@ -7,7 +7,7 @@ import { UiService } from 'src/app/common/ui.service';
 import { User } from 'src/app/user/user';
 import { SubSink } from 'subsink';
 import { Course, ILesson } from '../course';
-import { CourseService } from '../course.service';
+import { CourseService, ICourseData } from '../course.service';
 import { NewLessonComponent } from '../new-lesson/new-lesson.component';
 
 @Component({
@@ -69,6 +69,35 @@ export class CourseComponent implements OnInit, OnDestroy {
           },
           error: (err) => this.uiService.showToast(err.message),
         });
+      }
+    });
+  }
+
+  publishCourse() {
+    const dialog = this.uiService.showDialog(
+      'Publish Course',
+      `Publishing your course will make it live to students ` +
+        `for enrollment. Make sure all lessons are added and ready for publishing.`,
+      'Publish',
+      'Cancel'
+    );
+    this.subs.sink = dialog.subscribe((result) => {
+      if (result) {
+        this.courseService
+          .updateCourse(this.course._id, { published: true } as ICourseData)
+          .subscribe({
+            next: (res) => {
+              console.log(res);
+              this.uiService.showToast(
+                'Course published successfully',
+                'Close',
+                {
+                  duration: 2000,
+                }
+              );
+            },
+            error: (err) => this.uiService.showToast(err.message),
+          });
       }
     });
   }

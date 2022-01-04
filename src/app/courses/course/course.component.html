@@ -19,9 +19,29 @@
           >
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-stroked-button color="accent">PUBLISH</button>
           <button (click)="deleteCourse()" mat-icon-button color="accent">
             <mat-icon>delete</mat-icon>
+          </button>
+          <span *ngIf="!course.published">
+            <button
+              *ngIf="course.lessons.length === 0"
+              mat-stroked-button
+              color="accent"
+              (click)="openNewLessonDialog()"
+            >
+              Add a lesson
+            </button>
+            <button
+              mat-stroked-button
+              color="accent"
+              *ngIf="course.lessons.length > 0"
+              (click)="publishCourse()"
+            >
+              PUBLISH
+            </button>
+          </span>
+          <button *ngIf="course.published" mat-stroked-button color="accent">
+            PUBLISHED
           </button>
         </div>
       </div>
