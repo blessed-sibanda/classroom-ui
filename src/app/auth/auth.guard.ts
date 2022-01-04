@@ -10,7 +10,7 @@ import {
   UrlSegment,
   UrlTree,
 } from '@angular/router';
-import { Observable, map, take, combineLatest } from 'rxjs';
+import { Observable, map, take, combineLatest, tap } from 'rxjs';
 
 import { UiService } from '../common/ui.service';
 import { IUser } from '../user/user';
@@ -61,11 +61,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   protected checkAuthorizations(
     route?: ActivatedRouteSnapshot
   ): Observable<boolean> {
-    return combineLatest([
-      this.authService.authStatus$,
-      this.authService.getCurrentUser(),
-    ]).pipe(
-      map(([authStatus, currentUser]) => {
+    return this.authService.authStatus$.pipe(
+      map((authStatus) => {
         if (!authStatus.isAuthenticated) {
           this.uiService.showToast('You must login to continue');
           this.router.navigate(['login'], {
@@ -77,14 +74,20 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
           return false;
         }
 
-        const isInstructor = this.checkIsInstructor(currentUser, route);
-        if (!isInstructor) {
-          this.uiService.showToast(
-            'Only instructors are allowed to access this page'
-          );
-          this.router.navigate(['/home']);
-          return false;
-        }
+        this.authService.getCurrentUser().subscribe({
+          next: (currentUser) => {
+            const isInstructor = this.checkIsInstructor(currentUser, route);
+            if (!isInstructor) {
+              this.uiService.showToast(
+                'Only instructors are allowed to access this page'
+              );
+              this.router.navigate(['/home']);
+              return false;
+            }
+            return true;
+          },
+          error: (err) => this.uiService.showToast(err.message),
+        });
 
         const isOwner = this.checkIsOwner(authStatus, route);
         if (!isOwner) {
@@ -97,6 +100,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
         return true;
       }),
+
       take(1) // the observable must complete for the guard to work
     );
   }

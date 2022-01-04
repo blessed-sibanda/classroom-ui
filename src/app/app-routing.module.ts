@@ -8,6 +8,8 @@ import { LogoutComponent } from './auth/logout.component';
 import { NewCourseComponent } from './courses/new-course/new-course.component';
 import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
 import { AuthGuard } from './auth/auth.guard';
+import { CourseComponent } from './courses/course/course.component';
+import { CourseResolve } from './courses/course.resolve';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -15,6 +17,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'logout', component: LogoutComponent },
+  {
+    path: 'courses/:courseId',
+    component: CourseComponent,
+    canActivate: [AuthGuard],
+    resolve: { course: CourseResolve },
+  },
   {
     path: 'teach/courses',
     component: MyCoursesComponent,

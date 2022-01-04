@@ -32,7 +32,11 @@
             alt=""
           />
           <div style="margin-top: 0.5em; padding-bottom: 0.8em">
-            <h3 class="app-header" style="margin-bottom: 0">
+            <h3
+              class="app-header"
+              [routerLink]="'/courses/' + course._id"
+              style="margin-bottom: 0; cursor: pointer"
+            >
               {{ course.name }}
             </h3>
             <div>{{ course.description }}</div>

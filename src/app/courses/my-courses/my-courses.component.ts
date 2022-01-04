@@ -24,12 +24,11 @@ export class MyCoursesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subs.sink = this.authService.currentUser$.subscribe({
+    this.subs.sink = this.authService.getCurrentUser().subscribe({
       next: (user) => {
         this.courseService.getInstructorCourses(user._id).subscribe({
           next: (res) => {
             this.courses = res;
-            console.log('Courses -->', this.courses);
           },
         });
       },

@@ -15,6 +15,7 @@ export interface ICourseData {
 interface ICourseService {
   createCourse(data: ICourseData): Observable<Course>;
   getInstructorCourses(instructorId: string): Observable<Course[]>;
+  getCourse(courseId: string): Observable<Course>;
 }
 
 @Injectable({
@@ -22,6 +23,12 @@ interface ICourseService {
 })
 export class CourseService implements ICourseService {
   constructor(private httpClient: HttpClient) {}
+
+  getCourse(courseId: string): Observable<Course> {
+    return this.httpClient
+      .get<ICourse>(`${environment.baseApiUrl}/courses/${courseId}`)
+      .pipe(map(Course.Build), catchError(transformError));
+  }
 
   getInstructorCourses(instructorId: string): Observable<Course[]> {
     return this.httpClient

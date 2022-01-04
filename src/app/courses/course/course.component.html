@@ -1,0 +1,61 @@
+<div fxLayout="row" fxLayoutAlign="center">
+  <mat-card fxFlex.xs="96%" fxFlex.gt-xs="600px">
+    <mat-card-content>
+      <div
+        fxLayout.gt-xs="row"
+        fxLayout.xs="column"
+        fxLayoutAlign="space-between start"
+      >
+        <div>
+          <h2 style="margin: 0">{{ course.name }}</h2>
+          <p class="accent">By {{ course.instructor.name }}</p>
+          <span *ngIf="course.category">{{ course.category }}</span>
+        </div>
+        <div *ngIf="currentUser._id == course.instructor._id">
+          <button mat-icon-button color="accent">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-stroked-button color="accent">PUBLISH</button>
+          <button mat-icon-button color="accent">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div
+        fxLayout.gt-xs="row"
+        fxLayout.xs="column"
+        fxLayoutAlign="start start"
+      >
+        <img
+          style="
+            padding: 0.8em;
+            padding-left: 0;
+            max-height: 200px;
+            object-fit: cover;
+          "
+          [style]="media.isActive('xs') ? 'width: 100%' : 'width: 50%'"
+          [src]="
+            course.imageUrl ? course.imageUrl : '../../../assets/course.png'
+          "
+          alt=""
+        />
+        <div style="margin-top: 1em">{{ course.description }}</div>
+      </div>
+      <mat-divider inset></mat-divider>
+      <div
+        fxLayout="row"
+        style="margin-top: 0.4em"
+        fxLayoutAlign="space-between center"
+      >
+        <div>
+          <h3 style="margin-bottom: 0; font-weight: 500">Lessons</h3>
+          <h4 style="margin-bottom: 0">6 lessons</h4>
+        </div>
+        <button mat-raised-button color="primary">
+          <mat-icon>add</mat-icon>
+          <span>NEW LESSON</span>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

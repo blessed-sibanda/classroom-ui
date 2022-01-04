@@ -26,6 +26,8 @@ import { authFactory } from './auth/auth.factory';
 import { NewCourseComponent } from './courses/new-course/new-course.component';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
+import { CourseComponent } from './courses/course/course.component';
+import { CourseResolve } from './courses/course.resolve';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
     SimpleDialogComponent,
     NewCourseComponent,
     MyCoursesComponent,
+    CourseComponent,
   ],
   imports: [
     HttpClientModule,
@@ -62,6 +65,7 @@ import { MyCoursesComponent } from './courses/my-courses/my-courses.component';
       useClass: AuthHttpInterceptor,
       multi: true,
     },
+    CourseResolve,
   ],
   bootstrap: [AppComponent],
 })
