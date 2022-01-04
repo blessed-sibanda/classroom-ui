@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
 import { UiService } from 'src/app/common/ui.service';
 import { SubSink } from 'subsink';
@@ -31,7 +30,6 @@ export class NewLessonComponent implements OnInit, OnDestroy {
     private courseService: CourseService,
     private _ngZone: NgZone,
     private uiService: UiService,
-    private route: ActivatedRoute,
     public dialogRef: MatDialogRef<NewLessonComponent>,
     @Inject(MAT_DIALOG_DATA) public course: Course
   ) {}
@@ -65,7 +63,9 @@ export class NewLessonComponent implements OnInit, OnDestroy {
       .createLesson(this.course._id, lessonData)
       .subscribe({
         next: (res) => {
-          this.uiService.showToast('Lesson created successfully');
+          this.uiService.showToast('Lesson created successfully', '', {
+            duration: 1500,
+          });
           this.dialogRef.close();
         },
         error: (err) => this.uiService.showToast(err.message),

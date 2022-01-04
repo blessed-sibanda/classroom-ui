@@ -10,9 +10,15 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewLessonComponent } from './new-lesson/new-lesson.component';
+import { CourseResolve } from './course.resolve';
 
 @NgModule({
-  declarations: [NewCourseComponent, MyCoursesComponent, CourseComponent, NewLessonComponent],
+  declarations: [
+    NewCourseComponent,
+    MyCoursesComponent,
+    CourseComponent,
+    NewLessonComponent,
+  ],
   imports: [
     CommonModule,
     CourseRoutingModule,
@@ -22,5 +28,6 @@ import { NewLessonComponent } from './new-lesson/new-lesson.component';
     ReactiveFormsModule,
     FormsModule,
   ],
+  providers: [CourseResolve],
 })
 export class CourseModule {}

@@ -23,7 +23,6 @@ import { AuthService } from './auth/auth.service';
 import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
 import { NgpImagePickerModule } from 'ngp-image-picker';
-import { CourseResolve } from './courses/course.resolve';
 import { CourseModule } from './courses/course.module';
 
 @NgModule({
@@ -60,7 +59,6 @@ import { CourseModule } from './courses/course.module';
       useClass: AuthHttpInterceptor,
       multi: true,
     },
-    CourseResolve,
   ],
   bootstrap: [AppComponent],
 })
