@@ -24,6 +24,7 @@ import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { authFactory } from './auth/auth.factory';
 import { NgpImagePickerModule } from 'ngp-image-picker';
 import { CourseModule } from './courses/course.module';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,10 @@ import { CourseModule } from './courses/course.module';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHttpInterceptor,
       multi: true,
+    },
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: { hasBackdrop: true, disableClose: true },
     },
   ],
   bootstrap: [AppComponent],
