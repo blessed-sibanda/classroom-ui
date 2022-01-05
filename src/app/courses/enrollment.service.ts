@@ -8,6 +8,14 @@ import { Enrollment, IEnrollment } from './enrollment';
 interface IEnrollmentService {
   enroll(courseId: string): Observable<Enrollment>;
   getEnrollment(enrollmentId: string): Observable<Enrollment>;
+  completeLesson(
+    enrollmentId: string,
+    lessonStatusId: string
+  ): Observable<void>;
+  unCompleteLesson(
+    enrollmentId: string,
+    lessonStatusId: string
+  ): Observable<void>;
 }
 
 @Injectable({
@@ -15,6 +23,25 @@ interface IEnrollmentService {
 })
 export class EnrollmentService implements IEnrollmentService {
   constructor(private httpClient: HttpClient) {}
+
+  completeLesson(
+    enrollmentId: string,
+    lessonStatusId: string
+  ): Observable<void> {
+    return this.httpClient.put<void>(
+      `${environment.baseApiUrl}/enrollments/${enrollmentId}/complete/${lessonStatusId}`,
+      {}
+    );
+  }
+  unCompleteLesson(
+    enrollmentId: string,
+    lessonStatusId: string
+  ): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.baseApiUrl}/enrollments/${enrollmentId}/complete/${lessonStatusId}`,
+      {}
+    );
+  }
 
   getEnrollment(enrollmentId: string): Observable<Enrollment> {
     return this.httpClient

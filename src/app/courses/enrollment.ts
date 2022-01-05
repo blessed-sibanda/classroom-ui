@@ -1,7 +1,8 @@
 import { IUser } from '../user/user';
 import { ICourse, ILesson } from './course';
 
-interface ILessonStatus {
+export interface ILessonStatus {
+  _id: string;
   lesson: ILesson;
   complete: boolean;
 }

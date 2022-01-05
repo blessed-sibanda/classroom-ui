@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ActivatedRoute,
   ActivatedRouteSnapshot,
@@ -9,7 +9,7 @@ import { UiService } from 'src/app/common/ui.service';
 import { User } from 'src/app/user/user';
 import { SubSink } from 'subsink';
 import { Course, ICourse, ILesson } from '../course';
-import { Enrollment } from '../enrollment';
+import { Enrollment, ILessonStatus } from '../enrollment';
 import { EnrollmentService } from '../enrollment.service';
 
 @Component({
@@ -20,7 +20,8 @@ import { EnrollmentService } from '../enrollment.service';
 export class EnrollmentComponent implements OnInit, OnDestroy {
   enrollment: Enrollment = new Enrollment('', new Course(), new User(), []);
   subs = new SubSink();
-  selectedLesson: ILesson | null | undefined;
+  selectedLesson: ILessonStatus | null | undefined;
+  checked = true;
 
   constructor(
     private enrollmentService: EnrollmentService,
@@ -34,11 +35,38 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe();
   }
 
-  selectItem(item: ILesson | null) {
+  selectItem(item: ILessonStatus | null) {
     this.selectedLesson = item;
   }
 
-  ngOnInit(): void {
+  markComplete(lessonStatus: ILessonStatus) {
+    let action = !lessonStatus.complete
+      ? () =>
+          this.enrollmentService.completeLesson(
+            this.enrollment._id,
+            lessonStatus._id
+          )
+      : () =>
+          this.enrollmentService.unCompleteLesson(
+            this.enrollment._id,
+            lessonStatus._id
+          );
+    action().subscribe({
+      next: () => {
+        this.uiService.showToast(
+          `You have ${lessonStatus.complete ? 'uncompleted' : 'completed'}: ${
+            lessonStatus.lesson.title
+          }`
+        );
+        this.syncData();
+        if (this.selectedLesson)
+          this.selectedLesson.complete = !this.selectedLesson?.complete;
+      },
+      error: (err) => this.uiService.showToast(err.message),
+    });
+  }
+
+  syncData() {
     this.subs.add(
       this.route.params.subscribe({
         next: (params) => {
@@ -46,6 +74,7 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
             .getEnrollment(params['enrollmentId'])
             .subscribe({
               next: (res) => {
+                console.log('res', res);
                 this.enrollment = res;
               },
               error: (err) => {
@@ -56,5 +85,9 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
         },
       })
     );
+  }
+
+  ngOnInit(): void {
+    this.syncData();
   }
 }

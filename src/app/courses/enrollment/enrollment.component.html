@@ -1,6 +1,7 @@
 <mat-drawer-container
   style="min-height: 90vh; margin-top: -1.5em"
   class="example-container"
+  *ngIf="enrollment._id != ''"
 >
   <mat-drawer style="width: 300px" mode="side" opened>
     <mat-action-list style="padding-top: 0">
@@ -15,14 +16,14 @@
     <mat-divider></mat-divider>
     <mat-list>
       <mat-list-item>
-        <h2 mat-line>{{ enrollment.course.lessons.length }} Lessons</h2>
+        <h2 mat-line>{{ enrollment.lessonStatus.length }} Lessons</h2>
       </mat-list-item>
     </mat-list>
     <mat-action-list>
       <mat-list-item
-        [ngClass]="lesson == selectedLesson ? 'selected' : ''"
-        (click)="selectItem(lesson)"
-        *ngFor="let lesson of enrollment.course.lessons; let i = index"
+        [ngClass]="status.lesson == selectedLesson?.lesson ? 'selected' : ''"
+        (click)="selectItem(status)"
+        *ngFor="let status of enrollment.lessonStatus; let i = index"
       >
         <span
           style="border: solid thin grey; margin-right: 0.3em"
@@ -32,12 +33,17 @@
         >
           <span>{{ i + 1 }}</span>
         </span>
-        <h3 style="display: contents; line-height: 1.8">{{ lesson.title }}</h3>
+        <h3 style="display: contents; line-height: 1.8">
+          {{ status.lesson.title }}
+        </h3>
         <div class="flex-spacer"></div>
-        <mat-radio-button
-          [checked]="enrollment.lessonStatus[i].complete"
-          disabled
-        ></mat-radio-button>
+
+        <mat-radio-group [(ngModel)]="checked">
+          <mat-radio-button
+            [value]="status.complete"
+            disabled
+          ></mat-radio-button>
+        </mat-radio-group>
       </mat-list-item>
     </mat-action-list>
   </mat-drawer>
@@ -45,19 +51,31 @@
     <h1 class="app-header" style="margin: 0.6em">
       {{ enrollment.course.name }}
     </h1>
-    <mat-card style="margin: 0.5em 1em" class="mat-elevation-z1">
+    <mat-card
+      style="margin: 0.5em 1em; max-width: 650px"
+      class="mat-elevation-z1"
+    >
       <mat-card-content>
         <div *ngIf="selectedLesson">
           <div fxLayout="row" fxLayoutAlign="space-between center">
-            <h2>{{ selectedLesson.title }}</h2>
-            <button color="accent" mat-stroked-button>MARK AS COMPLETE</button>
+            <h2>{{ selectedLesson.lesson.title }}</h2>
+            <button
+              color="accent"
+              (click)="markComplete(selectedLesson)"
+              mat-stroked-button
+            >
+              {{ !selectedLesson.complete ? "MARK AS COMPLETE" : "Completed" }}
+            </button>
           </div>
-          <div>{{ selectedLesson.content }}</div>
-          <div style="margin-top: 1em" *ngIf="selectedLesson.resourceUrl">
+          <div>{{ selectedLesson.lesson.content }}</div>
+          <div
+            style="margin-top: 1em"
+            *ngIf="selectedLesson.lesson.resourceUrl"
+          >
             <a
               mat-raised-button
               color="primary"
-              [href]="selectedLesson.resourceUrl"
+              [href]="selectedLesson.lesson.resourceUrl"
               target="_blank"
             >
               Resource Link
@@ -67,7 +85,7 @@
         <div *ngIf="selectedLesson == null">
           <img
             mat-card-image
-            style="height: 45vh; object-fit: cover"
+            style="height: 50vh; object-fit: cover"
             [src]="
               enrollment.course.imageUrl
                 ? enrollment.course.imageUrl
