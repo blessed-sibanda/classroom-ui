@@ -1,1 +1,73 @@
-<p>enrollment works!</p>
+<mat-drawer-container
+  style="min-height: 90vh; margin-top: -1.5em"
+  class="example-container"
+>
+  <mat-drawer style="width: 300px" mode="side" opened>
+    <mat-action-list style="padding-top: 0">
+      <mat-list-item
+        [ngClass]="selectedLesson == null ? 'selected' : ''"
+        (click)="selectItem(null)"
+      >
+        <mat-icon mat-list-icon>info</mat-icon>
+        <h3 mat-line>Course Overview</h3>
+      </mat-list-item>
+    </mat-action-list>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item>
+        <h2 mat-line>{{ enrollment.course.lessons.length }} Lessons</h2>
+      </mat-list-item>
+    </mat-list>
+    <mat-action-list>
+      <mat-list-item
+        [ngClass]="lesson == selectedLesson ? 'selected' : ''"
+        (click)="selectItem(lesson)"
+        *ngFor="let lesson of enrollment.course.lessons; let i = index"
+      >
+        <span
+          style="border: solid thin grey; margin-right: 0.3em"
+          fxLayout="row"
+          fxLayoutAlign="center center"
+          mat-list-avatar
+        >
+          <span>{{ i + 1 }}</span>
+        </span>
+        <h3 style="display: contents; line-height: 1.8">{{ lesson.title }}</h3>
+        <div class="flex-spacer"></div>
+        <mat-radio-button
+          [checked]="enrollment.lessonStatus[i].complete"
+          disabled
+        ></mat-radio-button>
+      </mat-list-item>
+    </mat-action-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <h1 class="app-header" style="margin: 0.6em">
+      {{ enrollment.course.name }}
+    </h1>
+    <mat-card style="margin: 0.5em 1em" class="mat-elevation-z1">
+      <mat-card-content>
+        <div *ngIf="selectedLesson">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <h2>{{ selectedLesson.title }}</h2>
+            <button color="accent" mat-stroked-button>MARK AS COMPLETE</button>
+          </div>
+          <div>{{ selectedLesson.content }}</div>
+        </div>
+        <div *ngIf="selectedLesson == null">
+          <img
+            mat-card-image
+            style="height: 45vh; object-fit: cover"
+            [src]="
+              enrollment.course.imageUrl
+                ? enrollment.course.imageUrl
+                : '../../../assets/course.png'
+            "
+            alt=""
+          />
+          <div>{{ enrollment.course.description }}</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-drawer-content>
+</mat-drawer-container>

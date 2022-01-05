@@ -59,8 +59,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
           } else {
             this.enrollmentService.enroll(courseId).subscribe({
               next: (res) => {
-                console.log(res);
                 this.uiService.showToast('You have successfully enrolled');
+                this.router.navigate([`/classes/${res._id}`]);
               },
               error: (err) => this.uiService.showToast(err.message),
             });
