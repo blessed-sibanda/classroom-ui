@@ -6,6 +6,7 @@ import { UiService } from 'src/app/common/ui.service';
 import { SubSink } from 'subsink';
 import { Course } from '../course';
 import { CourseService } from '../course.service';
+import { EnrollmentService } from '../enrollment.service';
 
 @Component({
   selector: 'app-courses',
@@ -21,7 +22,8 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private uiService: UiService,
     private authService: AuthService,
     private router: Router,
-    public media: MediaObserver
+    public media: MediaObserver,
+    private enrollmentService: EnrollmentService
   ) {}
 
   ngOnDestroy(): void {
@@ -55,7 +57,13 @@ export class CoursesComponent implements OnInit, OnDestroy {
               },
             });
           } else {
-            // enroll user
+            this.enrollmentService.enroll(courseId).subscribe({
+              next: (res) => {
+                console.log(res);
+                this.uiService.showToast('You have successfully enrolled');
+              },
+              error: (err) => this.uiService.showToast(err.message),
+            });
           }
         },
       })

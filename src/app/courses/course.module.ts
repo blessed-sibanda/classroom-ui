@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewLessonComponent } from './new-lesson/new-lesson.component';
 import { CourseResolve } from './course.resolve';
 import { EditCourseComponent } from './edit-course/edit-course.component';
+import { EnrollmentComponent } from './enrollment/enrollment.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { EditCourseComponent } from './edit-course/edit-course.component';
     CourseComponent,
     NewLessonComponent,
     EditCourseComponent,
+    EnrollmentComponent,
   ],
   imports: [
     CommonModule,
