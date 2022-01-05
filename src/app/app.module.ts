@@ -26,6 +26,7 @@ import { NgpImagePickerModule } from 'ngp-image-picker';
 import { CourseModule } from './courses/course.module';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { CoursesComponent } from './courses/courses/courses.component';
+import { EnrollmentsComponent } from './courses/enrollments/enrollments.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { CoursesComponent } from './courses/courses/courses.component';
     SignUpComponent,
     SimpleDialogComponent,
     CoursesComponent,
+    EnrollmentsComponent,
   ],
   imports: [
     HttpClientModule,

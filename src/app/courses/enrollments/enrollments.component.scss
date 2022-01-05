@@ -1,0 +1,12 @@
+.course-icon {
+  transform: scale(1.75);
+}
+
+.course-img {
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: scale(0.93);
+  }
+}

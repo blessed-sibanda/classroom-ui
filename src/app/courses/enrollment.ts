@@ -12,6 +12,7 @@ export interface IEnrollment {
   course: ICourse;
   student: IUser;
   lessonStatus: ILessonStatus[];
+  completed?: string;
 }
 
 export class Enrollment implements IEnrollment {
@@ -19,7 +20,8 @@ export class Enrollment implements IEnrollment {
     public _id = '',
     public course: ICourse,
     public student: IUser,
-    public lessonStatus: ILessonStatus[]
+    public lessonStatus: ILessonStatus[],
+    public completed = ''
   ) {}
 
   static Build(enrollment: IEnrollment): Enrollment {
@@ -27,7 +29,8 @@ export class Enrollment implements IEnrollment {
       enrollment._id,
       enrollment.course,
       enrollment.student,
-      enrollment.lessonStatus
+      enrollment.lessonStatus,
+      enrollment.completed
     );
   }
 

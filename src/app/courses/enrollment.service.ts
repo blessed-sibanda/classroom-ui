@@ -8,6 +8,7 @@ import { Enrollment, IEnrollment } from './enrollment';
 interface IEnrollmentService {
   enroll(courseId: string): Observable<Enrollment>;
   getEnrollment(enrollmentId: string): Observable<Enrollment>;
+  listEnrollments(): Observable<Enrollment[]>;
   completeLesson(
     enrollmentId: string,
     lessonStatusId: string
@@ -23,6 +24,12 @@ interface IEnrollmentService {
 })
 export class EnrollmentService implements IEnrollmentService {
   constructor(private httpClient: HttpClient) {}
+
+  listEnrollments(): Observable<Enrollment[]> {
+    return this.httpClient
+      .get<IEnrollment[]>(`${environment.baseApiUrl}/enrollments`)
+      .pipe(map(Enrollment.BuildMany), catchError(transformError));
+  }
 
   completeLesson(
     enrollmentId: string,

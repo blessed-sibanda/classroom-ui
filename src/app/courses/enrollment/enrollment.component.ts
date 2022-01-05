@@ -22,6 +22,7 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
   subs = new SubSink();
   selectedLesson: ILessonStatus | null | undefined;
   checked = true;
+  completedLessonsCount = 0;
 
   constructor(
     private enrollmentService: EnrollmentService,
@@ -76,6 +77,8 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
               next: (res) => {
                 console.log('res', res);
                 this.enrollment = res;
+                this.completedLessonsCount =
+                  this.enrollment.lessonStatus.filter((l) => l.complete).length;
               },
               error: (err) => {
                 this.uiService.showToast(err.message);
