@@ -14,4 +14,6 @@ export const PasswordValidation = OptionalPasswordValidation.concat([
   Validators.required,
 ]);
 
-export const UrlValidation = [Validators.pattern(/^(https?:\/\/|www).+\..+/)];
+export const UrlValidation = [
+  Validators.pattern(/^(https?:\/\/|www).+(\.|:).+/),
+];

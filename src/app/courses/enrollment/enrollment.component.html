@@ -53,6 +53,16 @@
             <button color="accent" mat-stroked-button>MARK AS COMPLETE</button>
           </div>
           <div>{{ selectedLesson.content }}</div>
+          <div style="margin-top: 1em" *ngIf="selectedLesson.resourceUrl">
+            <a
+              mat-raised-button
+              color="primary"
+              [href]="selectedLesson.resourceUrl"
+              target="_blank"
+            >
+              Resource Link
+            </a>
+          </div>
         </div>
         <div *ngIf="selectedLesson == null">
           <img
