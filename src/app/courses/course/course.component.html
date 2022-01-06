@@ -11,56 +11,68 @@
           <p class="accent">By {{ course.instructor.name }}</p>
           <span *ngIf="course.category">{{ course.category }}</span>
         </div>
-        <div *ngIf="currentUser._id == course.instructor._id">
-          <button
-            [routerLink]="'/course/' + course._id + '/edit'"
-            mat-icon-button
-            color="accent"
+        <div fxLayout="column" fxLayoutAlign="center end">
+          <div
+            style="margin-bottom: 0.3em"
+            *ngIf="currentUser._id == course.instructor._id"
           >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            *ngIf="!course.published"
-            (click)="deleteCourse()"
-            mat-icon-button
-            color="accent"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-          <span *ngIf="!course.published">
             <button
-              *ngIf="course.lessons.length === 0"
-              mat-stroked-button
+              *ngIf="!course.published"
+              [routerLink]="'/course/' + course._id + '/edit'"
+              mat-icon-button
               color="accent"
-              (click)="openNewLessonDialog()"
             >
-              Add a lesson
+              <mat-icon>edit</mat-icon>
             </button>
             <button
-              mat-stroked-button
+              *ngIf="!course.published"
+              (click)="deleteCourse()"
+              mat-icon-button
               color="accent"
-              *ngIf="course.lessons.length > 0"
-              (click)="publishCourse()"
             >
-              PUBLISH
+              <mat-icon>delete</mat-icon>
             </button>
-          </span>
-          <button *ngIf="course.published" mat-stroked-button color="accent">
-            PUBLISHED
-          </button>
+            <span *ngIf="!course.published">
+              <button
+                *ngIf="course.lessons.length === 0"
+                mat-stroked-button
+                color="accent"
+                (click)="openNewLessonDialog()"
+              >
+                Add a lesson
+              </button>
+              <button
+                mat-stroked-button
+                color="accent"
+                *ngIf="course.lessons.length > 0"
+                (click)="publishCourse()"
+              >
+                PUBLISH
+              </button>
+            </span>
+          </div>
+          <div *ngIf="course.published" fxLayout="row" fxLayoutGap="7px">
+            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px"
+              ><mat-icon>people</mat-icon>
+              <span>{{ enrollmentStats.totalEnrolled }} enrolled</span>
+            </span>
+            <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px"
+              ><mat-icon>verified_user</mat-icon>
+              <span>{{ enrollmentStats.totalCompleted }} completed</span>
+            </span>
+          </div>
         </div>
       </div>
-      <div
-        fxLayout.gt-xs="row"
-        fxLayout.xs="column"
-        fxLayoutAlign="start start"
-      >
+      <div>
         <img
           style="
-            padding: 0.8em;
+            padding: 0 0.8em;
+            margin-bottom: 0.8em;
             padding-left: 0;
             max-height: 200px;
             object-fit: cover;
+            float: left;
+            clear: left;
           "
           [style]="media.isActive('xs') ? 'width: 100%' : 'width: 50%'"
           [src]="
@@ -70,9 +82,16 @@
         />
         <div style="margin: 1em 0; text-align: justify">
           {{ course.description }}
+
+          <div style="margin-top: 0.5em">
+            <button mat-raised-button (click)="enroll()" color="accent">
+              Enroll
+            </button>
+          </div>
         </div>
       </div>
-      <mat-divider inset></mat-divider>
+
+      <mat-divider style="clear: both" inset></mat-divider>
       <div
         fxLayout="row"
         style="margin-top: 0.4em"
@@ -83,7 +102,7 @@
           <h4 style="margin-bottom: 0">{{ course.lessons.length }} lessons</h4>
         </div>
         <button
-          *ngIf="course.instructor._id === currentUser._id"
+          *ngIf="course.instructor._id === currentUser._id && !course.published"
           mat-raised-button
           (click)="openNewLessonDialog()"
           color="primary"

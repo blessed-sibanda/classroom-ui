@@ -1,12 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { transformError } from '../common/common';
 import { Enrollment, IEnrollment } from './enrollment';
 
+export interface IEnrollmentStats {
+  totalEnrolled: number;
+  totalCompleted: number;
+}
 interface IEnrollmentService {
+  enrollments$: BehaviorSubject<Enrollment[]>;
   enroll(courseId: string): Observable<Enrollment>;
+  unEnroll(enrollmentId: string): Observable<void>;
+
   getEnrollment(enrollmentId: string): Observable<Enrollment>;
   listEnrollments(): Observable<Enrollment[]>;
   completeLesson(
@@ -17,18 +24,37 @@ interface IEnrollmentService {
     enrollmentId: string,
     lessonStatusId: string
   ): Observable<void>;
+  getEnrollmentStats(courseId: string): Observable<IEnrollmentStats>;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class EnrollmentService implements IEnrollmentService {
+  enrollments$ = new BehaviorSubject<Enrollment[]>([]);
+
   constructor(private httpClient: HttpClient) {}
+
+  unEnroll(enrollmentId: string): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.baseApiUrl}/enrollments/${enrollmentId}`
+    );
+  }
+
+  getEnrollmentStats(courseId: string): Observable<IEnrollmentStats> {
+    return this.httpClient.get<IEnrollmentStats>(
+      `${environment.baseApiUrl}/enrollments/${courseId}/stats`
+    );
+  }
 
   listEnrollments(): Observable<Enrollment[]> {
     return this.httpClient
       .get<IEnrollment[]>(`${environment.baseApiUrl}/enrollments`)
-      .pipe(map(Enrollment.BuildMany), catchError(transformError));
+      .pipe(
+        map(Enrollment.BuildMany),
+        tap((d) => this.enrollments$.next(d)),
+        catchError(transformError)
+      );
   }
 
   completeLesson(
@@ -62,6 +88,12 @@ export class EnrollmentService implements IEnrollmentService {
         `${environment.baseApiUrl}/enrollments/${courseId}`,
         {}
       )
-      .pipe(map(Enrollment.Build), catchError(transformError));
+      .pipe(
+        map(Enrollment.Build),
+        tap((d) =>
+          this.enrollments$.next([...this.enrollments$.getValue(), d])
+        ),
+        catchError(transformError)
+      );
   }
 }

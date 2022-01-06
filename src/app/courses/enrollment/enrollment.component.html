@@ -64,9 +64,30 @@
     </mat-list>
   </mat-drawer>
   <mat-drawer-content>
-    <h1 class="app-header" style="margin: 0.6em">
-      {{ enrollment.course.name }}
-    </h1>
+    <div
+      [style]="
+        media.isActive('sm') || media.isActive('xs')
+          ? 'width: 100%'
+          : 'width: 650px'
+      "
+      fxLayout.lt-md="column"
+      fxLayout.gt-sm="row"
+      fxLayoutAlign="space-between center"
+    >
+      <h1 class="app-header" style="margin: 0.6em">
+        {{ enrollment.course.name }}
+      </h1>
+      <div fxLayout="row" fxLayoutGap="7px">
+        <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px"
+          ><mat-icon>people</mat-icon>
+          <span>{{ enrollmentStats?.totalEnrolled || 0 }} enrolled</span>
+        </span>
+        <span fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px"
+          ><mat-icon>verified_user</mat-icon>
+          <span>{{ enrollmentStats?.totalCompleted || 0 }} completed</span>
+        </span>
+      </div>
+    </div>
     <mat-card
       style="margin: 0.5em 1em; max-width: 650px"
       class="mat-elevation-z1"
@@ -119,9 +140,15 @@
             "
             alt=""
           />
+
           <div>{{ enrollment.course.description }}</div>
         </div>
       </mat-card-content>
+      <mat-card-actions *ngIf="selectedLesson == null">
+        <button (click)="unEnroll()" mat-stroked-button color="warn">
+          Un Enroll
+        </button>
+      </mat-card-actions>
     </mat-card>
   </mat-drawer-content>
 </mat-drawer-container>

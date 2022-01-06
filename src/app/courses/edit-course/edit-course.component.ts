@@ -75,6 +75,10 @@ export class EditCourseComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.course = this.route.snapshot.data['course'];
+    if (this.course.published) {
+      this.uiService.showToast('You cannot edit a published course')
+      this.router.navigate([`/course/${this.course._id}`])
+    }
     this.lessons = this.course.lessons.sort((a, b) => a.order - b.order);
 
     // for lessons without orders

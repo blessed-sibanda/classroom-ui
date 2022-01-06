@@ -1,16 +1,12 @@
-import { AfterViewChecked, Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  Router,
-} from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MediaObserver } from '@angular/flex-layout';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UiService } from 'src/app/common/ui.service';
 import { User } from 'src/app/user/user';
 import { SubSink } from 'subsink';
-import { Course, ICourse, ILesson } from '../course';
+import { Course } from '../course';
 import { Enrollment, ILessonStatus } from '../enrollment';
-import { EnrollmentService } from '../enrollment.service';
+import { EnrollmentService, IEnrollmentStats } from '../enrollment.service';
 
 @Component({
   selector: 'app-enrollment',
@@ -23,11 +19,12 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
   selectedLesson: ILessonStatus | null | undefined;
   checked = true;
   completedLessonsCount = 0;
+  enrollmentStats!: IEnrollmentStats;
 
   constructor(
     private enrollmentService: EnrollmentService,
     private route: ActivatedRoute,
-    private authService: AuthService,
+    public media: MediaObserver,
     private uiService: UiService,
     private router: Router
   ) {}
@@ -79,6 +76,9 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
                 this.enrollment = res;
                 this.completedLessonsCount =
                   this.enrollment.lessonStatus.filter((l) => l.complete).length;
+                this.enrollmentService
+                  .getEnrollmentStats(this.enrollment.course._id)
+                  .subscribe({ next: (res) => (this.enrollmentStats = res) });
               },
               error: (err) => {
                 this.uiService.showToast(err.message);
@@ -86,6 +86,28 @@ export class EnrollmentComponent implements OnInit, OnDestroy {
               },
             });
         },
+      })
+    );
+  }
+
+  unEnroll() {
+    const dialog = this.uiService.showDialog(
+      'Un Enroll?',
+      `Are you sure you want to un-enroll from: ${this.enrollment.course.name}`,
+      'Confirm',
+      'Cancel'
+    );
+    this.subs.add(
+      dialog.subscribe((result) => {
+        if (result) {
+          this.enrollmentService.unEnroll(this.enrollment._id).subscribe({
+            next: () => {
+              this.uiService.showToast('You have successfully un-enrolled');
+              this.router.navigate(['/home']);
+            },
+            error: (err) => this.uiService.showToast(err.message),
+          });
+        }
       })
     );
   }

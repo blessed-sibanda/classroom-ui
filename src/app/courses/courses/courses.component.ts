@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
-import { UiService } from 'src/app/common/ui.service';
+import { combineLatest, tap } from 'rxjs';
 import { SubSink } from 'subsink';
 import { Course } from '../course';
 import { CourseService } from '../course.service';
@@ -19,9 +17,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   constructor(
     private courseService: CourseService,
-    private uiService: UiService,
-    private authService: AuthService,
-    private router: Router,
     public media: MediaObserver,
     private enrollmentService: EnrollmentService
   ) {}
@@ -31,42 +26,21 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.enrollmentService.enrollments$.next([]);
     this.subs.add(
-      this.courseService.getPublishedCourses().subscribe({
-        next: (res) => {
-          this.courses = res;
-        },
-      })
-    );
-  }
-
-  enroll(courseId: string) {
-    this.subs.add(
-      this.authService.authStatus$.subscribe({
-        next: (authStatus) => {
-          if (!authStatus.isAuthenticated) {
-            let result = this.uiService.showDialog(
-              'Enroll',
-              'Sign in / Sign up to enroll',
-              'Sign In',
-              'Cancel'
+      combineLatest([
+        this.courseService.getPublishedCourses(),
+        this.enrollmentService.enrollments$,
+      ])
+        .pipe(
+          tap(([courses, enrollments]) => {
+            let enrolledCourses = enrollments.filter((e) => e.course._id);
+            this.courses = courses.filter(
+              (c) => !enrolledCourses.map((e) => e.course._id).includes(c._id)
             );
-            result.subscribe({
-              next: (res) => {
-                if (res) this.router.navigate(['/login']);
-              },
-            });
-          } else {
-            this.enrollmentService.enroll(courseId).subscribe({
-              next: (res) => {
-                this.uiService.showToast('You have successfully enrolled');
-                this.router.navigate([`/classes/${res._id}`]);
-              },
-              error: (err) => this.uiService.showToast(err.message),
-            });
-          }
-        },
-      })
+          })
+        )
+        .subscribe()
     );
   }
 }

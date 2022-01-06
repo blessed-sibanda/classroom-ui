@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
+import { AuthService } from 'src/app/auth/auth.service';
 import { SubSink } from 'subsink';
 import { Enrollment } from '../enrollment';
 import { EnrollmentService } from '../enrollment.service';
@@ -15,7 +16,8 @@ export class EnrollmentsComponent implements OnInit {
 
   constructor(
     private enrollmentService: EnrollmentService,
-    public media: MediaObserver
+    public media: MediaObserver,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {

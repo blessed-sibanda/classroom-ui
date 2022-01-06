@@ -1,15 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="center">
   <div fxFlex.xs="96%" fxFlex.gt-xs="600px">
-    <mat-card
-      style="background-color: lightgray; border-radius: 0"
-      class="mat-elevation-z0"
-      *ngIf="(authService.authStatus$ | async)?.isAuthenticated"
-    >
-      <mat-card-content>
-        <h2>Courses you are enrolled in</h2>
-        <app-enrollments></app-enrollments>
-      </mat-card-content>
-    </mat-card>
+    <app-enrollments></app-enrollments>
+
     <mat-card style="margin-top: 1em">
       <mat-card-content>
         <mat-card-subtitle class="app-header"

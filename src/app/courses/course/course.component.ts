@@ -8,6 +8,8 @@ import { User } from 'src/app/user/user';
 import { SubSink } from 'subsink';
 import { Course, ILesson } from '../course';
 import { CourseService, ICourseData } from '../course.service';
+import { Enrollment } from '../enrollment';
+import { EnrollmentService, IEnrollmentStats } from '../enrollment.service';
 import { NewLessonComponent } from '../new-lesson/new-lesson.component';
 
 @Component({
@@ -20,6 +22,8 @@ export class CourseComponent implements OnInit, OnDestroy {
   currentUser!: User;
   subs = new SubSink();
   lessons!: ILesson[];
+  enrollmentStats!: IEnrollmentStats;
+  isEnrolled!: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,28 +31,35 @@ export class CourseComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private uiService: UiService,
     private courseService: CourseService,
-    private router: Router
+    private router: Router,
+    private enrollmentService: EnrollmentService
   ) {}
 
   ngOnDestroy(): void {
     this.subs.unsubscribe();
   }
 
-  ngOnInit(): void {
+  syncData() {
     this.course = this.route.snapshot.data['course'];
     this.lessons = this.course.lessons.sort((a, b) => a.order - b.order);
     this.subs.sink = combineLatest([
       this.authService.currentUser$,
       this.courseService.currentCourse$,
+      this.enrollmentService.getEnrollmentStats(this.course._id),
     ])
       .pipe(
-        tap(([user, course]) => {
+        tap(([user, course, stats]) => {
           this.currentUser = user;
           this.course = course;
           this.lessons = this.course.lessons;
+          this.enrollmentStats = stats;
         })
       )
       .subscribe();
+  }
+
+  ngOnInit(): void {
+    this.syncData();
   }
 
   deleteCourse() {
@@ -100,6 +111,36 @@ export class CourseComponent implements OnInit, OnDestroy {
           });
       }
     });
+  }
+
+  enroll() {
+    this.subs.add(
+      this.authService.authStatus$.subscribe({
+        next: (authStatus) => {
+          if (!authStatus.isAuthenticated) {
+            let result = this.uiService.showDialog(
+              'Enroll',
+              'Sign in / Sign up to enroll',
+              'Sign In',
+              'Cancel'
+            );
+            result.subscribe({
+              next: (res) => {
+                if (res) this.router.navigate(['/login']);
+              },
+            });
+          } else {
+            this.enrollmentService.enroll(this.course._id).subscribe({
+              next: (res) => {
+                this.uiService.showToast('You have successfully enrolled');
+                this.router.navigate([`/classes/${res._id}`]);
+              },
+              error: (err) => this.uiService.showToast(err.message),
+            });
+          }
+        },
+      })
+    );
   }
 
   openNewLessonDialog() {
