@@ -1,14 +1,14 @@
-# Skeleton App
+# Classroom
 
-This is a classroom angular application with authentication and authorization features. It is designed to be as simple as possible so that it is easy to extend and can be used as a base application for developing different **MEAN** applications.
+This is a simple online classroom application built with Angular 13 and Angular Material.
 
 ## Feature breakdown
 
-- **Sign up**: Users can register by creating a new account using an email address
-- **User list**: Any visitor can see a list of all registered users
-- **Authentication**: Registered users can sign-in and sign-out
-- **Protected user profile**: Only registered users can view individual user details after signing in
-- **Authorized user edit and delete**: Only a registered and authenticated user can edit or remove their own user account details
+- **Multiple Roles**: Users can have either educator or student role
+- **Course Managment**: Educators can create & publish courses and their lessons
+- **Course Catalog**: Users can browse and enroll/un-enroll on courses
+- **Progress Tracking**: Students can mark lessons as completed and track their progress on courses
+- **Course Stats**: Courses statistic are shown on each course page
 
 ## Development server
 
